@@ -1,5 +1,25 @@
 body {
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  background-color: #242424; }
+
+h1, h2, p, a {
+  color: #ffffff; }
+
+.animation {
+  display: block;
+  position: absolute;
+  min-width: calc(100vw - 100px);
+  min-height: calc(100vh - 100px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #ffffff; }
+  .animation canvas {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); }
 
 /*# sourceMappingURL=stylesheet.css.map */

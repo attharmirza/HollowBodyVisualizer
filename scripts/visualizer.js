@@ -46,9 +46,10 @@ function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
 
-  var musicScale = analyser.getAverageFrequency()/100 + 1;
+  var musicRelScale = 1 + analyser.getAverageFrequency()/255;
+  var musicAbsScale = analyser.getAverageFrequency()/255;
 
-  DaCube.scale.setScalar(musicScale);
+  DaCube.scale.setScalar(musicRelScale);
 
   // DaCube.scale.x = musicScale;
   // DaCube.scale.y = musicScale;

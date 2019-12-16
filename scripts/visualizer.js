@@ -27,13 +27,40 @@ musicLoader.load('/audio/music.mp3', function (buffer) {
 
 // Create geometry
 
-var cube = new THREE.BoxGeometry(1,1,1);
-var material = new THREE.MeshBasicMaterial({color: 0xff3333});
+// var cube = new THREE.BoxGeometry(1,1,1);
+// var material = new THREE.MeshBasicMaterial({color: 0xff3333});
+// var model = new THREE.Mesh(cube, material);
+// scene.add(model);
+// model.position.z = -6;
 
-var model = new THREE.Mesh(cube, material);
-scene.add(model);
+var DaHeart = new THREE.Group();
 
-model.position.z = -6;
+var loader = new THREE.GLTFLoader();
+loader.load('models/heart-v1.glb', function (gltf) {
+  var heart = gltf.scene.children[0];
+  var materialHeart = new THREE.MeshBasicMaterial({color: 0xff3333});
+  var materialMonitor = new THREE.MeshBasicMaterial({color: 0x505050});
+  var materialScreen = new THREE.MeshBasicMaterial({color: 0x23e0ad});
+  var materialWireYellow = new THREE.MeshBasicMaterial({color: 0xf2e256});
+  var materialWireBlue = new THREE.MeshBasicMaterial({color: 0x1db0ff});
+
+  gltf.scene.traverse(function(child) {
+    console.log(child);
+  });
+
+  DaHeart.add(heart);
+  heart.scale.set(22,22,22);
+  heart.material = materialHeart;
+
+  heart.getObjectByName('Monitor').material = materialMonitor;
+  heart.getObjectByName('Wire1').material = materialWireBlue;
+  heart.getObjectByName('Wire2').material = materialWireYellow;
+  heart.getObjectByName('Screen').material = materialScreen;
+});
+
+scene.add(DaHeart);
+DaHeart.position.z = -6;
+
 
 // Use the audio and geometry to drive some animation
 
@@ -54,7 +81,7 @@ $('.animation').mousemove(function() {
 
   raycaster.setFromCamera(mouse, camera);
   raycaster.ray.intersectPlane(plane, intersectPoint);
-  model.lookAt(intersectPoint);
+  DaHeart.lookAt(intersectPoint);
 });
 
 sceneElem.click(function() {
@@ -71,10 +98,11 @@ function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
 
-  var musicRelScale = 1 + analyser.getAverageFrequency()/255;
+  var musicRelScale = 1 + (analyser.getAverageFrequency()/255*0.2);
   var musicAbsScale = analyser.getAverageFrequency()/255;
 
-  model.scale.setScalar(musicRelScale);
+  DaHeart.scale.setScalar(musicRelScale);
+  DaHeart.children[0].rotation.y = DaHeart.children[0].rotation.y + 0.003;
 
   // model.scale.x = musicScale;
   // model.scale.y = musicScale;
